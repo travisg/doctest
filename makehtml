@@ -1,0 +1,19 @@
+#!/bin/sh
+
+OUTDIR=html
+TEMPLATE=template
+
+MDFILES=`find . -name \*.md`
+
+for f in $MDFILES; do
+    OUTF=$OUTDIR/$(echo $f | sed 's/md$/html/')
+    echo converting $f to $OUTF
+
+    mkdir -p $(dirname $OUTF)
+
+    # run each input file through kramdown to generate html output
+    # note, have to replace .md links with .html in the body of the text
+    cat $f | sed 's/\.md/\.html/' | kramdown --template $TEMPLATE > $OUTF
+done
+
+
